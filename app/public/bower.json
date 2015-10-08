@@ -1,0 +1,20 @@
+{
+  "name": "dxm",
+  "version": "0.0.0",
+  "homepage": "https://github.com/otsakir/dxm",
+  "authors": [
+    "Orestis Tsakiridis <otsakir@gmail.com>"
+  ],
+  "description": "dxm application UI",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
