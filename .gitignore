@@ -1,0 +1,5 @@
+app/nginx/client_body_temp
+app/nginx/fastcgi_temp
+app/nginx/proxy_temp
+app/nginx/scgi_temp
+app/nginx/uwsgi_temp
