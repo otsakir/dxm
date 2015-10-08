@@ -3,5 +3,5 @@ app/nginx/fastcgi_temp
 app/nginx/proxy_temp
 app/nginx/scgi_temp
 app/nginx/uwsgi_temp
-app/nginx/logs/*
+app/nginx/logs
 *.swp
