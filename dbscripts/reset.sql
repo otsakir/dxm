@@ -24,6 +24,6 @@ create table goods (
 	moreUrl varchar(256)
 );
 
-insert into users values (1,'nando@gmail.com','Orestis Tsakiridis',0,1);
+insert into users values (1,'Orestis Tsakiridis','nando@gmail.com',0,1);
 insert into locations values (1,'Γρηγορίου Λαμπράκη 32', 'Το σπίτι μας στη Φιλαδέλφεια',0.12,0.34);
 insert into goods values (1,'Σταφύλι σουλτανίτα', 'Παραδοσιακή σουλτανίνα Ζεμενού', null,'http://www.google.com');
