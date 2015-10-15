@@ -14,7 +14,7 @@ if (ngx.var.request_method == "GET") then
 			ngx.exit(ngx.HTTP_NOT_FOUND)
 		end
 	else
-		ngx.say(cjson.encode(list_users(pg)))
+		ngx.say(cjson.encode(storage.list_users(pg)))
 	end
 elseif (ngx.var.request_method == "POST") then
 	ngx.say("received POST")
