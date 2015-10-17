@@ -1,4 +1,10 @@
 <div class="browse-view">
 	<h1>browse</h1>
-	<ui-gmap-google-map center='map.center' zoom='map.zoom'></ui-gmap-google-map>
+	<ui-gmap-google-map center='map.center' zoom='map.zoom'>
+		<ui-gmap-marker ng-repeat="location in locations" idKey='location.sid' coords="{latitude:location.lat,longitude:location.lng}">
+		</ui-gmap-marker>
+	</ui-gmap-google-map>
+	<div>
+		{{locations}}
+	</div>
 </div>
