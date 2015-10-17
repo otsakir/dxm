@@ -7,5 +7,5 @@ if (base32) then
 		return
 	end
 end
-ngx.say("failed authentication")
+ngx.exit(401)
 

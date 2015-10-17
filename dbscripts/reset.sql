@@ -9,11 +9,11 @@ create table users (
 
 drop table locations;
 create table locations (
-	sid varchar(32) PRIMARY KEY ,
+	sid varchar(36) PRIMARY KEY ,
 	address varchar(128),
 	name varchar(128),
-	lng float NOT NULL,
-	lat float NOT NULL
+	lng float,
+	lat float
 );
 drop table goods;
 create table goods (

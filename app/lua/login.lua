@@ -20,6 +20,10 @@ end
 local username = ngx.var.arg_username
 local password = ngx.var.arg_password
 -- validate request params here
+if not username or not password then
+	ngx.exit(ngx.HTTP_BAD_REQUEST)
+	return
+end	
 
 if not login(username, password) then
 	ngx.exit(ngx.HTTP_UNAUTHORIZED)
