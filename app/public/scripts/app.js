@@ -10,6 +10,10 @@ angular.module('dxm').config(function($routeProvider, $locationProvider) {
 		templateUrl: 'templates/home.html',
 		controller: 'homeCtrl'
 	})
+	.when('/browse', {
+		templateUrl: 'templates/browse.html',
+		controller: 'browseCtrl'
+	})	
 	.otherwise({
 		redirectTo: "/"
 	});
