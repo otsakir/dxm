@@ -1,7 +1,8 @@
 <div class="browse-view">
 	<h1>browse</h1>
 	<ui-gmap-google-map center='map.center' zoom='map.zoom'>
-		<ui-gmap-marker ng-repeat="location in locations" idKey='location.sid' coords="{latitude:location.lat,longitude:location.lng}">
+		<ui-gmap-marker ng-repeat="location in locations" idKey='location.sid' click="markerClicked(location)" coords="{latitude:location.lat,longitude:location.lng}" options="{labelContent:location.name,labelClass:'my-marker',icon:'/images/grapes.png'}" >
+			<ui-gmap-window  templateUrl='"templates/marker-window.html"' templateParameter="location">asdf</ui-gmap-window>
 		</ui-gmap-marker>
 	</ui-gmap-google-map>
 	<div>

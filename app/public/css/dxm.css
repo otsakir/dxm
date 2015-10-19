@@ -3,5 +3,14 @@
 
 .browse-view .angular-google-map-container { 
 	height: 400px;
-	width: 400px;
+/*	width: 400px;*/
+}
+
+.my-marker {
+	font-weight: bold;
+
+}
+
+.marker-tooltip {
+	max-width: 200px;
 }
