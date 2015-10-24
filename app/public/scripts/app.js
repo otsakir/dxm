@@ -15,6 +15,11 @@ angular.module('dxm').config(function($routeProvider, $locationProvider) {
 		templateUrl: 'templates/browse.html',
 		controller: 'browseCtrl'
 	})	
+	.when('/profile', {
+		templateUrl: 'templates/profile.html',
+		controller: 'profileCtrl',
+		controllerAs: 'ctrl'
+	})		
 	.otherwise({
 		redirectTo: "/"
 	});

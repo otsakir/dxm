@@ -14,7 +14,7 @@ function connect_db()
 end
 
 function get_user(pg,userid)
-	local res = assert(pg:query("select * from users where username = ".. pg:escape_literal(userid)))
+	local res = assert(pg:query("select * from members where username = ".. pg:escape_literal(userid)))
 	if #res > 0 then
 		return 200, res[1]
 	else
@@ -23,7 +23,7 @@ function get_user(pg,userid)
 end
 
 function list_users(pg)
-	local res = assert(pg:query("select * from users"))
+	local res = assert(pg:query("select * from members"))
 	return res
 end
 
@@ -32,10 +32,10 @@ function list_locations(pg)
 	return res
 end
 
-function create_location(pg, loc)
+function create_location(pg, loc, userid)
 	local id = uuid4.getUUID()
-	local query = build_insert_query(pg, "locations", {"sid","name","address","lat","lng"}, {id,loc.name,loc.address,loc.lat,loc.lng})
-	ngx.say(query)
+	local query = build_insert_query(pg, "locations", {"sid","member_sid", "name","address","lat","lng"}, {id,userid,loc.name,loc.address,loc.lat,loc.lng})
+	--ngx.say(query)
 	local res,message = pg:query(query)
 	if not res then
 		return res,message

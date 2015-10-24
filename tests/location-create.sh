@@ -1,1 +1,1 @@
-curl  -X POST http://localhost:8080/api/locations -d '{"name":"location1","address":"address 1","lat":0.01,"lng":0.02}'
+curl --cookie "session=scgalsdkc6pbmrgo719tt3voudgcj7k7nup77pa9g8febi812550ucmldqg6c2f89oibno5jrefl8==="  -X POST http://localhost:8080/api/locations -d '{"name":"location1","address":"address 1","lat":0.01,"lng":0.02}'
