@@ -29,6 +29,6 @@ angular.module('dxm').config(function(uiGmapGoogleMapApiProvider) {
     uiGmapGoogleMapApiProvider.configure({
         key: 'AIzaSyBxPZxYYs6Vh9gaQtV0k0yfSHO33ixBsy4 ',
         v: '3.20', //defaults to latest 3.X anyhow
-        libraries: 'weather,geometry,visualization'
+        libraries: 'weather,geometry,visualization,places'
     });
 })
