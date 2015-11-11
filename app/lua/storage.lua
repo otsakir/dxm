@@ -61,3 +61,7 @@ function build_insert_query(pg, table_name, fields, values)
 	return "INSERT into "..table_name.."("..fields_part..") values ("..values_part..")"
 end
 
+function list_goods(pg)
+	return assert(pg:query("select * from goods"))
+end
+

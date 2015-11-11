@@ -23,6 +23,10 @@ angular.module("dxm").controller("profileCtrl",function ($scope, $resource) {
 	var startLat = 37.9908996;
 	var startLng = 23.7032341
 	var ctrl = this;
+	
+	var Goods = $resource("api/goods");
+	ctrl.goods = Goods.query();
+	
 	ctrl.map = { center: { latitude: startLat, longitude: startLng }, zoom: 8 };	
 	ctrl.location = {
 		id:0,
