@@ -36,4 +36,5 @@ create table location_goods (
 insert into members values (1,'Tester','tester@gmail.com',0,1);
 insert into locations values (1,1,'Αθηνάς 34', 'Χωράφι',23.7032341,37.9908996);
 insert into goods values (1,'Σταφύλι σουλτανίτα', 'Παραδοσιακή σουλτανίνα Ζεμενού', null,'http://www.google.com');
+insert into goods values (2,'Ελαιόλαδο', 'Εξτρα παρθένο ελαιόλαδο', null,'http://www.google.com');
 insert into location_goods values (1, 1);

@@ -1,46 +1,31 @@
 local cjson = require "cjson"
 local storage = require "storage"
+local dispatcher = require "dispatcher"
 
---ngx.log(ngx.ERR, "host: "..ngx.var.host)
---ngx.log(ngx.ERR, "uri: "..ngx.var.uri)
--- ngx.log(ngx.ERR, "vars: "..ngx.var)
-
-local m = ngx.re.match(ngx.var.uri, "^/api/goods(/.+)")
---ngx.log(ngx.ERR, "m[0]: "..m[0])
---ngx.log(ngx.ERR, "m[1]: "..m[1])
-
+local pg = storage.connect_db()
+assert(pg:connect())
 
 function get_goods()
-	ngx.log(ngx.ERR, "retrieving goods")
+	local res, message = storage.list_goods(pg)
+	if not res then
+		ngx.exit(404) -- treat all errors as NOT_FOUND
+	else
+		ngx.say(cjson.encode(res))
+	end
 end
 
-function get_single_good()
-	ngx.log(ngx.ERR, "retrieving a single good")
+function get_single_good(matches)
+	ngx.log(ngx.ERR, "retrieving good: "..matches[1])
 end
 
 function add_good()
 	ngx.log(ngx.ERR, "adding good")
 end
 
-function dispatch_request(base,rules)
-	ngx.log(ngx.ERR,"dispatching request")
-	print("asfasd")
-	local req_method = ngx.req.get_method()
-	for i,rule in ipairs(rules) do
-		if req_method == rule.method then
-			m = ngx.re.match(ngx.var.uri, base..rule.pattern)
-			if m then
-				rule.action()
-			end
-		end
-	end
-end
-
-local dispatch = {}
-table.insert(dispatch, {method="GET", pattern="/.+$", action=get_single_good})
-table.insert(dispatch, {method="GET", pattern="/$", action=get_goods })
-table.insert(dispatch, {method="POST", pattern="/$", action=add_good})
-dispatch_request("^/api/goods", dispatch)
+dispatcher.addrule("GET","/(.+)$",get_single_good)
+dispatcher.addrule("GET","/?$",get_goods)
+dispatcher.addrule("POST","/$",add_good)
+dispatcher.dispatch("^/api/goods")
 
 return
 
