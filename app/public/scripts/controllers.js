@@ -47,6 +47,8 @@ angular.module("dxm").controller("profileCtrl",function ($scope, $resource) {
 				console.log(placesFound);
 				if ( !!placesFound ) {
 					ctrl.location.address = placesFound[0].formatted_address;
+					ctrl.location.coords.latitude = placesFound[0].geometry.location.A;
+					ctrl.location.coords.longitude = placesFound[0].geometry.location.F;
 				}
 			}
 		}

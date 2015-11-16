@@ -7,7 +7,13 @@ assert(pg:connect())
 
 
 function get_single_location(matches)
-	ngx.exit(501) -- not implemented
+	local locationid = matches[1]
+	local status, location = storage.get_location(pg,locationid)
+	if status == 200 then 
+		ngx.say(cjson.encode(location))
+	else
+		ngx.exit(ngx.HTTP_NOT_FOUND)
+	end
 end
 
 function get_locations()
@@ -33,10 +39,25 @@ function add_location()
 	end
 end
 
+function update_location(match)
+	ngx.req.read_body()
+	local locationid = match[1]
+	local loc = cjson.decode(ngx.req.get_body_data())
+	local res, message = storage.update_location(pg, loc, locationid)
+	if not res then
+		ngx.log(ngx.ERR,message)
+		ngx.exit(500)
+	else
+		ngx.exit(200)
+	end
+end
+
+
 
 dispatcher.addrule("GET","/(.+)$",get_single_location)
 dispatcher.addrule("GET","/?$",get_locations)
 dispatcher.addrule("POST","/$",add_location)
+dispatcher.addrule("PUT","/(.+)$",update_location)
 dispatcher.dispatch("^/api/locations")
 
 

@@ -13,6 +13,8 @@ function connect_db()
 	return pg
 end
 
+-- user API --
+
 function get_user(pg,userid)
 	local res = assert(pg:query("select * from members where username = ".. pg:escape_literal(userid)))
 	if #res > 0 then
@@ -27,9 +29,21 @@ function list_users(pg)
 	return res
 end
 
+-- location API -- 
+
 function list_locations(pg)
 	local res = assert(pg:query("select * from locations"))
 	return res
+end
+
+function get_location(pg,locationid)
+	local query = "select * from locations where sid = ".. pg:escape_literal(locationid)
+	local res = assert(pg:query(query))
+	if #res > 0 then
+		return 200, res[1]
+	else
+		return 404
+	end
 end
 
 function create_location(pg, loc, userid)
@@ -43,6 +57,22 @@ function create_location(pg, loc, userid)
 		loc.sid = id
 		return loc
 	end
+end
+
+function update_location(pg, loc, location_sid)
+	local query = build_update_query(pg, "locations", {"name","address","lat","lng"}, {loc.name,loc.address,loc.lat,loc.lng}, {sid = location_sid})
+	local res,message = pg:query(query)
+	if not res then
+		return res,message
+	else
+		return true;
+	end
+end
+
+-- goods API --
+
+function list_goods(pg)
+	return assert(pg:query("select * from goods"))
 end
 
 function build_insert_query(pg, table_name, fields, values)
@@ -61,7 +91,24 @@ function build_insert_query(pg, table_name, fields, values)
 	return "INSERT into "..table_name.."("..fields_part..") values ("..values_part..")"
 end
 
-function list_goods(pg)
-	return assert(pg:query("select * from goods"))
+function build_update_query(pg, table_name, fields, values, predicates)
+	if fields[1] and values[1] then
+		local query_body = "SET "..fields[1].." = "..pg:escape_literal(values[1])
+		local i = 2
+		while fields[i] and values[i] do
+			query_body = query_body..", "..fields[i].." = "..pg:escape_literal(values[i])
+			i = i+1
+		end
+		local predicate_clause = ""
+		if predicates then
+			predicate_clause = "WHERE "
+			local c = 0
+			for i,v in pairs(predicates) do
+				if c > 0 then predicate_clause = predicate_clause.." AND " end
+				predicate_clause = predicate_clause..i.." = "..pg:escape_literal(v)
+				c = c + 1
+			end
+		end
+		return "UPDATE "..table_name.." "..query_body.." "..predicate_clause
+	end
 end
-
