@@ -1,12 +1,25 @@
 local cjson = require "cjson"
 local storage = require "storage"
+local dispatcher = require "dispatcher"
 
 local pg = storage.connect_db()
 assert(pg:connect())
 
-if (ngx.var.request_method == "POST") then
-	--ngx.log(ngx.ERR,'Creating location for user '..ngx.ctx.username)
-	-- read location from request
+
+function get_single_location(matches)
+	ngx.exit(501) -- not implemented
+end
+
+function get_locations()
+	local res, message = storage.list_locations(pg)
+	if not res then
+		ngx.exit(404) -- treat all errors as NOT_FOUND
+	else
+		ngx.say(cjson.encode(res))
+	end
+end
+
+function add_location()
 	ngx.req.read_body()
 	local body = ngx.req.get_body_data()
 	local loc = cjson.decode(body)
@@ -18,13 +31,12 @@ if (ngx.var.request_method == "POST") then
 	else
 		ngx.say(cjson.encode(res))
 	end
-elseif (ngx.var.request_method == "GET" and not ngx.var.locationid) then
-	local res, message = storage.list_locations(pg)
-	if not res then
-		ngx.exit(404) -- treat all errors as NOT_FOUND
-	else
-		ngx.say(cjson.encode(res))
-	end
 end
+
+
+dispatcher.addrule("GET","/(.+)$",get_single_location)
+dispatcher.addrule("GET","/?$",get_locations)
+dispatcher.addrule("POST","/$",add_location)
+dispatcher.dispatch("^/api/locations")
 
 
