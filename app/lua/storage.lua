@@ -29,6 +29,25 @@ function list_users(pg)
 	return res
 end
 
+function add_user(pg, user)
+	local id = uuid4.getUUID()
+	local query = build_insert_query(pg, "members", {"sid", "name","username","is_producer","is_consumer"}, {id,user.name,user.username,user.is_producer,user.is_consumer})
+	local res,message = pg:query(query)
+	if not res then
+		return res,message
+	else
+		user.sid = id
+		return user
+	end
+end
+
+function remove_user(pg, userid)
+	assert(userid)
+	local query = build_remove_query(pg, "members", {sid=userid})
+	ngx.log(ngx.ERR,query)
+	return pg:query(query)
+end
+
 -- location API -- 
 
 function list_locations(pg)
@@ -99,16 +118,26 @@ function build_update_query(pg, table_name, fields, values, predicates)
 			query_body = query_body..", "..fields[i].." = "..pg:escape_literal(values[i])
 			i = i+1
 		end
-		local predicate_clause = ""
-		if predicates then
-			predicate_clause = "WHERE "
-			local c = 0
-			for i,v in pairs(predicates) do
-				if c > 0 then predicate_clause = predicate_clause.." AND " end
-				predicate_clause = predicate_clause..i.." = "..pg:escape_literal(v)
-				c = c + 1
-			end
-		end
-		return "UPDATE "..table_name.." "..query_body.." "..predicate_clause
+		return "UPDATE "..table_name.." "..query_body.." "..predicate_clause(predicates)
 	end
 end
+
+function build_remove_query(pg, table_name, predicates)
+	return "DELETE from "..table_name.." "..predicate_clause(predicates)
+end
+
+function predicate_clause(predicates)
+	local predicate_clause = ""
+	if predicates then
+		predicate_clause = "WHERE "
+		local c = 0
+		for i,v in pairs(predicates) do
+			if c > 0 then predicate_clause = predicate_clause.." AND " end
+			predicate_clause = predicate_clause..i.." = "..pg:escape_literal(v)
+			c = c + 1
+		end
+	end
+	return predicate_clause
+end
+
+

@@ -1,0 +1,1 @@
+curl -vvv -X POST --cookie "session=b899i8bu9lsie6t1npp3deft4lgcj7k7nup77pa9g8febi812555gsc83a1cr623g6l17996obq52==="  "http://localhost:8080/api/users/" -d '{"username":"alice@gmail.com","name":"alice"}' -H "Content-Type:application/json"
