@@ -48,7 +48,7 @@ function remove_user(pg, userid)
 	return pg:query(query)
 end
 
--- location API -- 
+-- location API --
 
 function list_locations(pg)
 	local res = assert(pg:query("select * from locations"))
@@ -94,6 +94,17 @@ function list_goods(pg)
 	return assert(pg:query("select * from goods"))
 end
 
+function get_good(pg,goodid)
+	local res = assert(pg:query("select * from goods "..predicate_clause({sid=goodid})))
+	if #res > 0 then
+		return res[0], OUTCOME.OK
+	else
+		return nil, OUTCOME.NOT_FOUND
+	end
+end
+
+-- lower level functions --
+
 function build_insert_query(pg, table_name, fields, values)
 	local fields_part = ""
 	local values_part = ""
@@ -104,7 +115,7 @@ function build_insert_query(pg, table_name, fields, values)
 	local i = 2
 	while fields[i] and values[i] do
 		fields_part = fields_part..","..fields[i]
-		values_part = values_part..","..pg:escape_literal(values[i])		
+		values_part = values_part..","..pg:escape_literal(values[i])
 		i = i+1
 	end
 	return "INSERT into "..table_name.."("..fields_part..") values ("..values_part..")"
@@ -139,5 +150,3 @@ function predicate_clause(predicates)
 	end
 	return predicate_clause
 end
-
-
